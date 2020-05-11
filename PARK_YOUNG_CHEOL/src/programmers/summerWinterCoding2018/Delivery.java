@@ -4,9 +4,12 @@ import java.util.HashMap;
 
 /**
  * 1시간 10분
- *
+ * <p>
  * #1. Node 클래스에 함수를 추가해서 새로운 edge가 입력될 때 마다
  * 기존의 edge와 비교해서 전역변수에 저장하도록 했으면 더 깔끔했을 것 같다.
+ * <p>
+ * #2. 문제는 정확히 보고 주어진 값도 확실히 보고 넘어간다.
+ * 이거 대충 보고 넘어가다가 N이 주어진지도 모르고 node만들때부터 복잡해서 오래걸릴뻔함
  */
 public class Delivery {
     static int answer;
@@ -25,16 +28,18 @@ public class Delivery {
             this.deliverable = false;
         }
 
-        /* #1
-        * void addEdge(int name, int cost){
-        *   // 입력된 edge가 기존의 edge에 존재하는지 확인! 만약에 있다면,
-        *   // edge.get(name)과 새로입력된 cost를 비교해서 더 작은 값을 넣는다
-        *   // 없다면 그냥 그대로 추가~ edge.put~
-        * }
-        * */
+        /* #1 */
+        void addEdge(Node node, int cost) {
+            if (this.edge.containsKey(node)) {
+                // 이미 있는 edge라면 cost가 더 작은 것으로 변경
+                this.edge.put(node, this.edge.get(node) > cost ? cost : this.edge.get(node));
+            } else {
+                this.edge.put(node, cost);
+            }
+        }
     }
 
-    static int solution(int N, int[][] road, int K) {
+    static int solution(int N, int[][] road, int K) { /* #2 */
         // 0은 비어있음
         nodes = new Node[N + 1];
         visited = new boolean[N + 1];
@@ -46,21 +51,9 @@ public class Delivery {
 
         for (int[] r : road) {
             // r[0] -> r[1] 로 가는 비용 r[2] 를 가지는 노드 생성
-            if (nodes[r[0]].edge.containsKey(nodes[r[1]])) {
-                // 이미 동일한 경로가 있다면 더 적은 비용을 저장
-                /* #1로 했으면 덜 헷갈렸을 것이다
-                * 아니면, 따로 전역변수를 두어서 덜 헷갈리게 하는게 나을듯 */
-                nodes[r[0]].edge.put(nodes[r[1]], nodes[r[0]].edge.get(nodes[r[1]]) > r[2] ? r[2] : nodes[r[0]].edge.get(nodes[r[1]]));
-            } else {
-                nodes[r[0]].edge.put(nodes[r[1]], r[2]);
-            }
+            nodes[r[0]].addEdge(nodes[r[1]], r[2]);
             // r[1] -> r[0] 로 가는 비용 r[2] 를 가지는 노드 생성
-            if (nodes[r[1]].edge.containsKey(nodes[r[0]])) {
-                // 이미 동일한 경로가 있다면 더 적은 비용을 저장
-                nodes[r[1]].edge.put(nodes[r[0]], nodes[r[1]].edge.get(nodes[r[0]]) > r[2] ? r[2] : nodes[r[1]].edge.get(nodes[r[0]]));
-            } else {
-                nodes[r[1]].edge.put(nodes[r[0]], r[2]);
-            }
+            nodes[r[1]].addEdge(nodes[r[0]], r[2]);
         }
 
         dfs(nodes[1], 0);
