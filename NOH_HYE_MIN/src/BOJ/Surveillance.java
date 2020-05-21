@@ -53,7 +53,7 @@ public class Surveillance {
                         for (int i = 0; i < N; i++) {
                             tmpRoom[i] = Arrays.copyOf(room[i], M);
                         }
-                        check(tmpRoom, cam.posY, cam.posX, dir);
+                        check(tmpRoom, cam.posX, cam.posY, dir);
                         allCamera(idx + 1, tmpRoom);
                     }
                     break;
@@ -62,8 +62,8 @@ public class Surveillance {
                         for (int i = 0; i < N; i++) {
                             tmpRoom[i] = Arrays.copyOf(room[i], M);
                         }
-                        check(tmpRoom, cam.posY, cam.posX, dir);
-                        check(tmpRoom, cam.posY, cam.posX, dir + 2);
+                        check(tmpRoom, cam.posX, cam.posY, dir);
+                        check(tmpRoom, cam.posX, cam.posY, (dir + 2) % 4);
                         allCamera(idx + 1, tmpRoom);
                     }
                     break;
@@ -72,8 +72,8 @@ public class Surveillance {
                         for (int i = 0; i < N; i++) {
                             tmpRoom[i] = Arrays.copyOf(room[i], M);
                         }
-                        check(tmpRoom, cam.posY, cam.posX, dir);
-                        check(tmpRoom, cam.posY, cam.posX, (dir + 1) % 4);
+                        check(tmpRoom, cam.posX, cam.posY, dir);
+                        check(tmpRoom, cam.posX, cam.posY, (dir + 1) % 4);
                         allCamera(idx + 1, tmpRoom);
                     }
                     break;
@@ -82,9 +82,9 @@ public class Surveillance {
                         for (int i = 0; i < N; i++) {
                             tmpRoom[i] = Arrays.copyOf(room[i], M);
                         }
-                        check(tmpRoom, cam.posY, cam.posX, dir);
-                        check(tmpRoom, cam.posY, cam.posX, (dir + 1) % 4);
-                        check(tmpRoom, cam.posY, cam.posX, (dir + 2) % 4);
+                        check(tmpRoom, cam.posX, cam.posY, dir);
+                        check(tmpRoom, cam.posX, cam.posY, (dir + 1) % 4);
+                        check(tmpRoom, cam.posX, cam.posY, (dir + 2) % 4);
                         allCamera(idx + 1, tmpRoom);
                     }
                     break;
@@ -92,10 +92,10 @@ public class Surveillance {
                     for (int i = 0; i < N; i++) {
                         tmpRoom[i] = Arrays.copyOf(room[i], M);
                     }
-                    check(tmpRoom, cam.posY, cam.posX, 0);
-                    check(tmpRoom, cam.posY, cam.posX, 1);
-                    check(tmpRoom, cam.posY, cam.posX, 2);
-                    check(tmpRoom, cam.posY, cam.posX, 3);
+                    check(tmpRoom, cam.posX, cam.posY, 0);
+                    check(tmpRoom, cam.posX, cam.posY, 1);
+                    check(tmpRoom, cam.posX, cam.posY, 2);
+                    check(tmpRoom, cam.posX, cam.posY, 3);
                     allCamera(idx + 1, tmpRoom);
                     break;
             }
