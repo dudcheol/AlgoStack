@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+/**
+ * 1시간 15분 - 시간초과
+ * 1시간 30분 - 정답!
+ */
 public class Surveillance {
     static int n;
     static int m;
@@ -46,7 +50,7 @@ public class Surveillance {
         return map;
     }
 
-    static void dfs(int k, int lastPos, int[][] changedMap) {
+    static void dfs(int k, int nextPos, int[][] changedMap) {
         if (k == cctvCnt) {
             // 0의 갯수를 센다
             int ans = 0;
@@ -59,84 +63,82 @@ public class Surveillance {
             return;
         }
 
-        for (int p = lastPos; p < cctvPos.size(); p++) {
-            int[] cPos = cctvPos.get(p);
-            int i = cPos[0];
-            int j = cPos[1];
+        int[] cPos = cctvPos.get(nextPos);
+        int i = cPos[0];
+        int j = cPos[1];
 
-            switch (changedMap[i][j]) {
-                case 1:
-                    dfs(k + 1, lastPos + 1, drawLine(i, j, 0, deepCopy(changedMap)));
-                    dfs(k + 1, lastPos + 1, drawLine(i, j, 1, deepCopy(changedMap)));
-                    dfs(k + 1, lastPos + 1, drawLine(i, j, 2, deepCopy(changedMap)));
-                    dfs(k + 1, lastPos + 1, drawLine(i, j, 3, deepCopy(changedMap)));
-                    break;
-                case 2:
-                    int[][] upDownMap = deepCopy(changedMap);
-                    drawLine(i, j, 0, upDownMap);
-                    drawLine(i, j, 2, upDownMap);
-                    dfs(k + 1, lastPos + 1, upDownMap);
+        switch (changedMap[i][j]) {
+            case 1:
+                dfs(k + 1, nextPos + 1, drawLine(i, j, 0, deepCopy(changedMap)));
+                dfs(k + 1, nextPos + 1, drawLine(i, j, 1, deepCopy(changedMap)));
+                dfs(k + 1, nextPos + 1, drawLine(i, j, 2, deepCopy(changedMap)));
+                dfs(k + 1, nextPos + 1, drawLine(i, j, 3, deepCopy(changedMap)));
+                break;
+            case 2:
+                int[][] upDownMap = deepCopy(changedMap);
+                drawLine(i, j, 0, upDownMap);
+                drawLine(i, j, 2, upDownMap);
+                dfs(k + 1, nextPos + 1, upDownMap);
 
-                    int[][] leftRightMap = deepCopy(changedMap);
-                    drawLine(i, j, 1, leftRightMap);
-                    drawLine(i, j, 3, leftRightMap);
-                    dfs(k + 1, lastPos + 1, leftRightMap);
-                    break;
-                case 3:
-                    int[][] upRight = deepCopy(changedMap);
-                    drawLine(i, j, 0, upRight);
-                    drawLine(i, j, 1, upRight);
-                    dfs(k + 1, lastPos + 1, upRight);
+                int[][] leftRightMap = deepCopy(changedMap);
+                drawLine(i, j, 1, leftRightMap);
+                drawLine(i, j, 3, leftRightMap);
+                dfs(k + 1, nextPos + 1, leftRightMap);
+                break;
+            case 3:
+                int[][] upRight = deepCopy(changedMap);
+                drawLine(i, j, 0, upRight);
+                drawLine(i, j, 1, upRight);
+                dfs(k + 1, nextPos + 1, upRight);
 
-                    int[][] rightDown = deepCopy(changedMap);
-                    drawLine(i, j, 1, rightDown);
-                    drawLine(i, j, 2, rightDown);
-                    dfs(k + 1, lastPos + 1, rightDown);
+                int[][] rightDown = deepCopy(changedMap);
+                drawLine(i, j, 1, rightDown);
+                drawLine(i, j, 2, rightDown);
+                dfs(k + 1, nextPos + 1, rightDown);
 
-                    int[][] leftDown = deepCopy(changedMap);
-                    drawLine(i, j, 3, leftDown);
-                    drawLine(i, j, 2, leftDown);
-                    dfs(k + 1, lastPos + 1, leftDown);
+                int[][] leftDown = deepCopy(changedMap);
+                drawLine(i, j, 3, leftDown);
+                drawLine(i, j, 2, leftDown);
+                dfs(k + 1, nextPos + 1, leftDown);
 
-                    int[][] leftUp = deepCopy(changedMap);
-                    drawLine(i, j, 3, leftUp);
-                    drawLine(i, j, 0, leftUp);
-                    dfs(k + 1, lastPos + 1, leftUp);
-                    break;
-                case 4:
-                    int[][] lur = deepCopy(changedMap);
-                    drawLine(i, j, 3, lur);
-                    drawLine(i, j, 0, lur);
-                    drawLine(i, j, 1, lur);
-                    dfs(k + 1, lastPos + 1, lur);
+                int[][] leftUp = deepCopy(changedMap);
+                drawLine(i, j, 3, leftUp);
+                drawLine(i, j, 0, leftUp);
+                dfs(k + 1, nextPos + 1, leftUp);
+                break;
+            case 4:
+                int[][] lur = deepCopy(changedMap);
+                drawLine(i, j, 3, lur);
+                drawLine(i, j, 0, lur);
+                drawLine(i, j, 1, lur);
+                dfs(k + 1, nextPos + 1, lur);
 
-                    int[][] urd = deepCopy(changedMap);
-                    drawLine(i, j, 0, urd);
-                    drawLine(i, j, 1, urd);
-                    drawLine(i, j, 2, urd);
-                    dfs(k + 1, lastPos + 1, urd);
+                int[][] urd = deepCopy(changedMap);
+                drawLine(i, j, 0, urd);
+                drawLine(i, j, 1, urd);
+                drawLine(i, j, 2, urd);
+                dfs(k + 1, nextPos + 1, urd);
 
-                    int[][] rdl = deepCopy(changedMap);
-                    drawLine(i, j, 1, rdl);
-                    drawLine(i, j, 2, rdl);
-                    drawLine(i, j, 3, rdl);
-                    dfs(k + 1, lastPos + 1, rdl);
+                int[][] rdl = deepCopy(changedMap);
+                drawLine(i, j, 1, rdl);
+                drawLine(i, j, 2, rdl);
+                drawLine(i, j, 3, rdl);
+                dfs(k + 1, nextPos + 1, rdl);
 
-                    int[][] dlu = deepCopy(changedMap);
-                    drawLine(i, j, 2, dlu);
-                    drawLine(i, j, 3, dlu);
-                    drawLine(i, j, 0, dlu);
-                    dfs(k + 1, lastPos + 1, dlu);
-                    break;
-                case 5:
-                    int[][] urdl = deepCopy(changedMap);
-                    drawLine(i, j, 0, urdl);
-                    drawLine(i, j, 1, urdl);
-                    drawLine(i, j, 2, urdl);
-                    drawLine(i, j, 3, urdl);
-                    dfs(k + 1, lastPos + 1, urdl);
-                    break;
-            }
+                int[][] dlu = deepCopy(changedMap);
+                drawLine(i, j, 2, dlu);
+                drawLine(i, j, 3, dlu);
+                drawLine(i, j, 0, dlu);
+                dfs(k + 1, nextPos + 1, dlu);
+                break;
+            case 5:
+                int[][] urdl = deepCopy(changedMap);
+                drawLine(i, j, 0, urdl);
+                drawLine(i, j, 1, urdl);
+                drawLine(i, j, 2, urdl);
+                drawLine(i, j, 3, urdl);
+                dfs(k + 1, nextPos + 1, urdl);
+                break;
         }
     }
 
