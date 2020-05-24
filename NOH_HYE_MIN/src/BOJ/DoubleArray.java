@@ -1,6 +1,5 @@
 package BOJ;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class DoubleArray {
@@ -26,27 +25,26 @@ public class DoubleArray {
             if(time>100){
                 time = -1;
             }
-            return;
         } else {
+            time++;
             int[][] tmp = new int[102][102];
+            int newSize = 0;
             if(row>=col){
                 // R 연산 수행
-                int newCol = 0;
                 for(int i=1; i<=row;i++){
                     int[] sortedRow = sort(A[i],col);
                     for(int j=1; j<=sortedRow.length; j++){
                         tmp[i][j] = sortedRow[j-1];
                     }
-                    if(newCol<=sortedRow.length){
-                        newCol = sortedRow.length;
+                    if(newSize<=sortedRow.length){
+                        newSize = sortedRow.length;
                     }
                 }
-                if (newCol > 100){
-                    newCol = 100;
+                if (newSize > 100){
+                    newSize = 100;
                 }
-                calc(tmp, row, newCol);
+                calc(tmp, row, newSize);
             } else {
-                int newRow = 0;
                 // C 연산
                 for(int i=1; i<=col; i++){
                     int[] colList = new int[row+1];
@@ -57,16 +55,15 @@ public class DoubleArray {
                     for(int k=1; k<=sortedCol.length; k++){
                         tmp[k][i] = sortedCol[k-1];
                     }
-                    if(newRow<=sortedCol.length){
-                        newRow = sortedCol.length;
+                    if(newSize <=sortedCol.length){
+                        newSize = sortedCol.length;
                     }
                 }
-                if (newRow > 100){
-                    newRow = 100;
+                if (newSize > 100){
+                    newSize = 100;
                 }
-                calc(tmp, newRow, col);
+                calc(tmp, newSize, col);
             }
-            time++;
         }
     }
     static int[] sort(int[] rowValue, int len){
