@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
+/**
+ * 1시간 20분
+ */
 public class NewGame2 {
     static int n;
     static int k;
