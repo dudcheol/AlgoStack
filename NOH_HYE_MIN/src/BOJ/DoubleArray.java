@@ -5,7 +5,7 @@ import java.util.*;
 public class DoubleArray {
     static int time = 0;
     static int r, c, k;
-    static int[][] A = new int[101][101];
+    static int[][] A = new int[102][102];
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         r = sc.nextInt();
@@ -21,46 +21,90 @@ public class DoubleArray {
         System.out.println(time);
     }
     static void calc(int[][] A, int row, int col){
-        if(A[r][c] == k || time>100){
+        if(time>100 || A[r][c] == k){
             if(time>100){
                 time = -1;
             }
-            return;
         } else {
+            time++;
+            int[][] tmp = new int[102][102];
+            int newSize = 0;
             if(row>=col){
                 // R 연산 수행
-                int newCol = 0;
                 for(int i=1; i<=row;i++){
-                    int[] sortedRow = sort(A[i]);
+                    int[] sortedRow = sort(A[i],col);
                     for(int j=1; j<=sortedRow.length; j++){
-                        A[i][j] = sortedRow[j-1];
+                        tmp[i][j] = sortedRow[j-1];
                     }
-                    if(newCol<=sortedRow.length){
-                        newCol = sortedRow.length;
+                    if(newSize<=sortedRow.length){
+                        newSize = sortedRow.length;
                     }
                 }
-                calc(A, row, newCol);
+                if (newSize > 100){
+                    newSize = 100;
+                }
+                calc(tmp, row, newSize);
             } else {
-                int newRow = 0;
                 // C 연산
-                calc(A, newRow, col);
+                for(int i=1; i<=col; i++){
+                    int[] colList = new int[row+1];
+                    for(int j=1; j<=row; j++){
+                        colList[j] = A[j][i];
+                    }
+                    int[] sortedCol = sort(colList,row);
+                    for(int k=1; k<=sortedCol.length; k++){
+                        tmp[k][i] = sortedCol[k-1];
+                    }
+                    if(newSize <=sortedCol.length){
+                        newSize = sortedCol.length;
+                    }
+                }
+                if (newSize > 100){
+                    newSize = 100;
+                }
+                calc(tmp, newSize, col);
             }
-            time++;
         }
     }
-    static int[] sort(int[] rowValue){
-        Map<Integer, Integer> cnt = new HashMap<Integer, Integer>();
-        for(int v:rowValue){
-            if(cnt.containsKey(v)){
-                cnt.replace(v, cnt.get(v)+1);
-            }
-            else {
-                cnt.put(v, 1);
+    static int[] sort(int[] rowValue, int len){
+        int[] cnt = new int[101];
+        for(int i=1; i<=len; i++){
+            if(rowValue[i]!=0) {
+                cnt[rowValue[i]]++;
             }
         }
         // value기준 오름차순 정렬, key 기준 내림차순 정렬
-
-        // 리스트에 옮겨닮고 반환
+        ArrayList<Counter> cntList = new ArrayList<>();
+        for(int i=0; i<cnt.length; i++){
+            if(cnt[i]!=0){
+                cntList.add(new Counter(i, cnt[i]));
+            }
+        }
+        Collections.sort(cntList);
+        int[] sorted = new int[cntList.size()*2];
+        int j=0;
+        for(int i=0; i<cntList.size(); i++){
+            sorted[j] = cntList.get(i).k;
+            sorted[j+1] = cntList.get(i).v;
+            j+=2;
+        }
         return sorted;
+    }
+}
+class Counter implements Comparable<Counter>{
+    int k;
+    int v;
+
+    public Counter(int k, int v){
+        this.k = k;
+        this.v = v;
+    }
+
+    @Override
+    public int compareTo(Counter counter) {
+        if(this.v == counter.v){
+            return this.k >= counter.k ? 1 : -1;
+        }
+        return this.v >= counter.v ? 1 : -1;
     }
 }
