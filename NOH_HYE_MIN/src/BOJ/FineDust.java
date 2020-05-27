@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class FineDust {
     static int r, c, t;
     static int[][] map;
-    static int cnt=0;
     static ArrayList<Integer> cleaner = new ArrayList<>();
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -23,17 +22,21 @@ public class FineDust {
                 }
             }
         }
+
         for(int k=0; k<t; k++){
             diffusion(getDustList(map));
             clean();
         }
+
         int answer = 0;
         for(int i=0; i<r; i++){
             for(int j=0; j<c; j++){
+                System.out.print(map[i][j]);
                 if(map[i][j]!=0 && map[i][j]!=-1){
                     answer += map[i][j];
                 }
             }
+            System.out.println();
         }
         System.out.println(answer);
     }
@@ -63,6 +66,8 @@ public class FineDust {
                 newMap[nr][nc] -= newDust;
             }
         }
+        newMap[cleaner.get(0)][0] = -1;
+        newMap[cleaner.get(1)][0] = -1;
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 map[i][j] = newMap[i][j];
@@ -95,7 +100,6 @@ public class FineDust {
                 map[upIdx][i] = 0;
             }
         }
-
         for(int i=downIdx+1; i<r; i++) {
             if(i!=r-1) {
                 map[i][0] = map[i+1][0];
