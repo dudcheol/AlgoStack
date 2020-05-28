@@ -1,4 +1,4 @@
-package boj.samsungSWtest;
+package boj.samsungSWtest.unsolvedRemider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 /**
  * 1시간30분동안 못풂
  */
-public class BabyShark {
+public class BabyShark_WRONG {
     static int n;
     static int answer = Integer.MAX_VALUE;
     static int sharkY;
