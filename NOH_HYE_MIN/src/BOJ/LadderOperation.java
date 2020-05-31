@@ -1,36 +1,62 @@
 package BOJ;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class LadderOperation {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt(); // 세로선
-        int m = sc.nextInt(); // 가로선
-        int h = sc.nextInt(); // 가로선을 넣을 수 있는 위치 개수
+    private static int n, h, answer = 4;
+    private static int[][] map;
 
-        boolean[][] horizontalLine = new boolean[h+1][n+1];
-        for(int i=0; i<m; i++){
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            horizontalLine[a][b+1] = true;
-            horizontalLine[a][b] = true;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        h = Integer.parseInt(st.nextToken());
+        map = new int[h + 1][n + 1];
+        int x, y;
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            x = Integer.parseInt(st.nextToken());
+            y = Integer.parseInt(st.nextToken());
+            map[x][y] = 1;
+            map[x][y + 1] = 2;
         }
+        dfs(1, 0);
+        System.out.println((answer != 4) ? answer : -1);
+    }
 
-        for(boolean[] v:horizontalLine){
-            for(boolean v2:v){
-                if(v2==false){
-                    System.out.print('0');
-                }else{
-                    System.out.print('1');
+    private static void dfs(int x, int count) {
+        if (answer <= count) return;
+        else {
+            if (check()) {
+                answer = count;
+                return;
+            }
+        }
+        for (int i = x; i < h + 1; i++) {
+            for (int j = 1; j < n; j++) {
+                if (map[i][j] == 0 && map[i][j + 1] == 0) {
+                    map[i][j] = 1;
+                    map[i][j + 1] = 2;
+                    dfs(i, count + 1);
+                    map[i][j] = map[i][j + 1] = 0;
                 }
             }
-            System.out.println();
         }
-        // 가로줄을 한개씩 추가하며 모든 케이스 체크하기..?
-        // 다리가 b, b+1사이에 가로선이 2개 있으면 항상 b->b, b+1->b+1로 움직이는듯?
-        // 2개 2개 짝이 지어진다면, 엇갈려놓이지 않고 1번 2번 2번 1번 이렇게감싸지게 놓이면 됨...
-        // 담을때 연결된 [ 세로줄 정보 b, b+1 묶고]key로 행정보를 value로 저장
-        // 담은 정보와 규칙활용해서 가로 줄 추가 여부 선택스. 끝
+    }
+
+    private static boolean check() {
+        for (int i = 1; i <= n; i++) {
+            int x = 1, y = i;
+            for (int j = 0; j < h; j++) {
+                if (map[x][y] == 1) y++;
+                else if (map[x][y] == 2) y--;
+                x++;
+            }
+            if (y != i) return false;
+        }
+        return true;
     }
 }
