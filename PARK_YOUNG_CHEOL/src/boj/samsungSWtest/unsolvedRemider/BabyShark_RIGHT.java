@@ -8,6 +8,7 @@ package boj.samsungSWtest.unsolvedRemider;
  *
  * 아기 상어는 물고기를 먹기 위해서 이동하는 것은 많은 물고기를 먹는 것이 아닌, 단순히 먹을 수 있는지 없는지만 파악하면 된다.
  * 아기 상어는 가장 가까운 거리에 있는 칸을 먹는다. 이므로 BFS를 사용하는 것이 더 효율적이다.
+ * BFS는 모든 간선의 가중치가 1로 같을때 최단 경로를 찾아준다.
  *
  * 출처: https://mygumi.tistory.com/339 [마이구미의 HelloWorld]
  */
