@@ -10,6 +10,12 @@ import java.util.StringTokenizer;
  * 메모리 : 16564kb
  * 시간 : 1348ms
  *
+ * -- 개선 --
+ * 메모리 : 15884kb
+ * 시간 : 340ms
+ * 문제에서 "정답이 3보다 큰 값이면 -1을 출력한다. 또, 불가능한 경우에도 -1을 출력한다"라는 조건이 있으므로
+ * 선을 0~3개 순서로 그리다가 한 번이라도 조건에 만족한다면 더이상 탐색할 필요가 없이 그것이 정답이 된다.
+ * 따라서, 더이상의 탐색을 중단함으로써 시간을 개선했다.
  */
 public class Ladder {
     static int N;
@@ -20,11 +26,14 @@ public class Ladder {
     static int drawNumber = 1;
 
     // 가능한 모든 경우를 구하자
-    static void dfs(int y, int addLine) {
+    static boolean dfs(int y, int addLine, int size /* 사다리에 그을 수 있는 선의 수 */) {
         // 기저
-        if (addLine > 3 || checkLadder()) {
-            answer = Math.min(answer, addLine);
-            return;
+        if (addLine == size) {
+            if (checkLadder()) {
+                answer = Math.min(answer, addLine);
+                return true;
+            }
+            return false;
         }
 
         // 사다리에 가로선 그리기
@@ -34,10 +43,12 @@ public class Ladder {
                 int next = map[i][j + 1];
                 if (current != -1 || next != -1) continue;
                 addLine(i, j);
-                dfs(i, addLine + 1);
+                /* 한 번이라도 조건에 만족해서 true가 리턴된다면 더이상 탐색할 필요 없음 */
+                if (dfs(i, addLine + 1, size)) return true;
                 removeLine(i, j);
             }
         }
+        return false;
     }
 
     static void addLine(int y, int x) {
@@ -97,7 +108,9 @@ public class Ladder {
             drawNumber++;
         }
 
-        dfs(1, 0);
+        /* 사다리에 선을 그을 수 있는 갯수를 지정 */
+        for (int i = 0; i <= 3; i++)
+            if (dfs(1, 0, i)) break;
         System.out.println(answer > 3 ? -1 : answer);
     }
 }
