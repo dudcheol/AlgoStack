@@ -11,7 +11,7 @@ public class LifeBoat {
         int left = 0;
         int right = people.length - 1;
 
-        while (left != right && left < right) {
+        while (left < right) {
             int weight = people[right];
             for (int i = left; i < right; i++) {
                 weight += people[i];
@@ -25,6 +25,13 @@ public class LifeBoat {
                     right--;
                     answer++;
                     break;
+                } else {
+                    if (i == right - 1) {
+                        // 마지막까지 더했는데도 limit보다 작으면
+                        // 전부 배에 탈 수 있으므로 배에 태움
+                        left = i;
+                        right--;
+                    }
                 }
             }
         }
@@ -58,10 +65,12 @@ public class LifeBoat {
     public static void main(String[] args) {
 //        int[] people = {70, 50, 80, 50};
 //        int limit = 100;
-        int[] people = {70, 50, 80};
-        int limit = 100;
+//        int[] people = {70, 50, 80};
+//        int limit = 100;
 //        int[] people = {10, 20, 30, 70, 80, 90};
 //        int limit = 100;
+        int[] people = {40, 40, 40, 40, 40};
+        int limit = 240;
 
         System.out.println(solution(people, limit));
     }
