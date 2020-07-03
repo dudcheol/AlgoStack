@@ -24,22 +24,22 @@ public class DNA {
             dnas[i] = br.readLine();
 
             for (int j = 0; j < m; j++) {
-                alphabet[j][dnas[i].charAt(j) - 65] += 1;
+                /* 굳이 A가 int로 65인 것을 생각할 필요없이 'A'를 빼주면 된다. */
+                alphabet[j][dnas[i].charAt(j) - 'A'] += 1;
             }
         }
 
         for (int i = 0; i < m; i++) {
             int max = alphabet[i][0];
-            char target = (char) (65);
+            char target = 'A';
             for (int j = 0; j < 26; j++) {
                 if (alphabet[i][j] > max) {
                     max = alphabet[i][j];
-                    target = (char) (j + 65);
+                    target = (char) (j + 'A');
                 }
             }
             sb.append(target);
         }
-
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -49,8 +49,5 @@ public class DNA {
 
         System.out.println(sb.toString());
         System.out.println(hammingDistance);
-
-        // A = 65  Z = 90
-//        System.out.println('Z'+0);
     }
 }
