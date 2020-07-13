@@ -15,7 +15,7 @@ public class _7_2 {
                 answer++;
             }
         } else if (k == 1) {
-            for (int i = 1; i <= 100; i++) {
+            for (int i = 100-x; i > 0; i--) {
                 printAnswer(k + 1, x, i);
             }
         } else if (k == 0) {
