@@ -6,11 +6,12 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /**
- * 과제3
- * m개의 원소를 가진 집합에서 n개의 원소를 가진 집합으로 가는 전사함수의 개수를 출력하는 프로그램을 작성하라.
+ * 과제3, 4
+ * m개의 원소를 가진 집합에서 n개의 원소를 가진 집합으로 가는 전사함수의 개수를 출력하고
+ * 전사함수 또한 모두 출력하는 프로그램을 작성하라.
  * m과 n의 값을 바꾸어 보면서 값이 너무 커지지 않는 입력의 범위가 어느 정도인지 확인해 보라.
  */
-public class _7_3 {
+public class _7_3and4 {
     static int m, n;
     static int[] memoM;
     static int[] visitedN;
