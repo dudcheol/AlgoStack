@@ -1,22 +1,31 @@
 package swea.ct;
 
+import java.util.Arrays;
+
 /**
  * 과제 3
  * 배열에 정수(음수 포함)들이 저장되어 있다. 연속인 구간들 중 그 합이 가장 큰 구간을 찾는 프로그램을 작성하라.
  */
 public class _8_3 {
+    static int[] cache;
 
-    /* O(nlogn) */
+    /* O(nlogn) 분할정복 */
     static int ans_divideConquer(int[] ary) {
         return 0;
     }
 
-    /* O(n) */
+    /* O(n) 동적계획법 */
     static int ans_dp(int[] ary) {
-        return 0;
+        int answer;
+        cache = new int[ary.length]; // 인덱스 i을 오른쪽 끝으로 갖는 구간의 최대합
+        answer = cache[0] = ary[0];
+        for (int i = 1; i < ary.length; i++) {
+            answer = Math.max(answer, cache[i] = Math.max(0, cache[i-1]) + ary[i]);
+        }
+        return answer;
     }
 
-    /* O(n^2) */
+    /* O(n^2) 완전탐색 */
     static int ans_for(int[] ary) {
         int res = ary[0];
         for (int i = 0; i < ary.length; i++) {
@@ -46,7 +55,7 @@ public class _8_3 {
 
     public static void main(String[] args) {
         // 이참에 슬라이딩 윈도우(투포인터 알고리즘) 기법을 익혀보자!
-        int method = 1;
+        int method = 3;
 
         // 테스트 케이스
         int[][] test_case = {
