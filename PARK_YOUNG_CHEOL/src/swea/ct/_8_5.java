@@ -33,33 +33,45 @@ public class _8_5 {
         }
     }
 
-    static void printTree(int depth, Node curNode, boolean isLast) {
-        // 기저
-        if (curNode.child.size() == 0) {
-            if (curNode.parent.child.size() > 1) {
-                System.out.print("+--");
-            } else System.out.print("-----");
-            System.out.print(String.format("[%03d]", curNode.id));
-            System.out.print("\n\t   ");
-            return;
-        }
-
-        Node parent = curNode.parent;
+    static void printTree(int depth, Node curNode, int idx) {
         ArrayList<Node> childs = curNode.child;
 
-        if (depth == 0) System.out.print(String.format("[%03d]--", curNode.id));
+        if (depth == 0)
+            // 루트노드 출력
+            System.out.print(String.format("[%03d]--", curNode.id));
         else {
-            if (isLast) System.out.print("+--");
-            else {
-                if (curNode.parent.child.size() == 1) System.out.print("-----");
-                else System.out.print("L--");
-            }
+            // 현재노드의 부모노드가 가진 자식노드들의 수에 따라 노드 앞에 출력될 문자(?--)가 달라진다.
+            if (curNode.parent.child.size() > 1)
+                System.out.print(curNode.parent.child.size() - 1 == idx ? "L--" : "+--");
+            else
+                System.out.print("---");
+
+            // 현재노드에 자식이 있으면 노드 뒤에 --가 있어야 하고, 한 칸 띄워야함
             System.out.print(String.format("[%03d]", curNode.id));
+            if (curNode.child.size() == 0)
+                System.out.print("\n");
+            else
+                System.out.print("--");
         }
 
+        // 현재노드의 자식노드를 방문
         for (int i = 0; i < childs.size(); i++) {
+            // 루트노드를 출력하기 전에, 앞에 공백이 되는 부분을 먼저 출력
+            if (depth == 0 && i != 0) System.out.print("       ");
+            else if (i != 0) {
+                // 첫번째 자식노드가 아니라면 앞에 공백이 필요함
+                System.out.print("       ");
+                // 현재노드가 부모노드의 마지막 자식노드가 아니고,
+                // 현재노드의 첫번째 자식노드가 아닐 경우에 현재노드의 형제노드들을 연결해줄 필요가 있다.
+                for (int j = 0; j < depth; j++)
+//                    if (curNode.parent.child.size() - 1 != idx)
+//                        System.out.print("|         ");
+//                    else
+                        System.out.print("          ");
+            }
+
             Node child = childs.get(i);
-            printTree(depth + 1, child, i != childs.size() - 1);
+            printTree(depth + 1, child, i);
         }
     }
 
@@ -92,6 +104,75 @@ public class _8_5 {
             nodes[child].parent = nodes[parent];
         }
 
-        printTree(0, nodes[root], false);
+        printTree(0, nodes[root], 0);
     }
 }
+
+/**
+ * test case
+ 6
+ 5
+ 30
+ 30 54 1 2 45 123
+ 30 54
+ 30 2
+ 30 45
+ 54 1
+ 45 123
+
+ 13
+ 12
+ 1
+ 1 2 3 4 5 6 7 8 9 10 11 12 13
+ 1  2
+ 1 3
+ 1 4
+ 2 5
+ 2 6
+ 3 7
+ 7 8
+ 4 9
+ 9 10
+ 10 11
+ 10 12
+ 10 13
+
+ 10
+ 9
+ 1
+ 1 2 3 4 5 6 7 8 9 10
+ 1 2
+ 1 3
+ 1 4
+ 2 5
+ 5 6
+ 3  7
+ 4 8
+ 8 9
+ 9 10
+
+ 21
+ 20
+ 1
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+ 1 2
+ 2 5
+ 5 11
+ 5 12
+ 2 6
+ 6 13
+ 6 14
+ 14 15
+ 1 3
+ 3 7
+ 3 8
+ 1 4
+ 4 9
+ 9 16
+ 16 19
+ 16 20
+ 20 21
+ 4 10
+ 10 17
+ 17  18
+ */
