@@ -19,6 +19,8 @@ public class MakeOne {
 
     static int op(int n) {
         if (n == 1) {
+            /* 실수 */
+            // 인자를 리턴하는 형태는 "부분문제"를 해결하는 것이 아니게 되므로 답을 찾을 수 없다.
             return 0;
         }
 
